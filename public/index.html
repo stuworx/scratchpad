@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title> Scratchpad - Your HTML and CSS playground by STUWORX</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="description" content="Your HTML and CSS playground by STUWORX">
+    <meta name="author" content="STUWORX">
+    <meta name="keywords" content="scratchpad, STUWORX, stuworx, html editor, css editor, editor, html and css editor, html, css">
+    <meta property="og:title" content="Scratchpad - Your HTML and CSS playground by STUWORX">
+    <meta property="og:description" content="Your HTML and CSS playground by STUWORX">
+    <meta property="og:site_name" content="Scratchpad">
+    <meta property="og:type" content="site">
+    <meta property="og:url" content="https://scratchpad.stuworx.com/">
+    <meta property="og:image" content="https://s3-ap-southeast-1.amazonaws.com/stuworx-dev-resources/ShareImages/logotype.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@StuworxTeam">
+    <meta name="twitter:title" content="Scratchpad - Your HTML and CSS playground by STUWORX">
+    <meta name="twitter:description" content="Your HTML and CSS playground by STUWORX.">
+    <meta name="twitter:image" content="https://s3-ap-southeast-1.amazonaws.com/stuworx-dev-resources/ShareImages/logo.png">
+    <meta property="twitter:url" content="https://scratchpad.stuworx.com/">
+    <link rel="canonical" href="https://scratchpad.stuworx.com/">
+    <link rel="author" href="STUWORX">
+    <link rel="publisher" href="STUWORX">
+    <meta name="robots" content="INDEX, FOLLOW">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/jquery.splitter/css/jquery.splitter.css">
+    <link rel="stylesheet" href="main.css">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#5f5da2">
+    <meta name="msapplication-TileImage" content="/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#5f5da2">
+
+</head>
+
+<body>
+    <main>
+        <header>
+            <nav class="navigation">
+                <h1 id="logo-container">
+                    <a href="https://stuworx.com" target="_blank">
+                        <img src="https://d2lnkz5z6ze3qt.cloudfront.net/v0102/images/stuworx-logo/logotype_negative.png" class="logo">
+                    </a>
+                    <a href="https://scratchpad.stuworx.com">
+                        <span class="text">SCRATCHPAD</span>
+                    </a>
+                </h1>
+            </nav>
+        </header>
+
+        <div id="code_content">
+            <div>
+                <nav class="toolbar">
+                    <button onclick="resetCode()">＋ New</button>
+                    <button onclick="formatCode()">☵ Format</button>
+                </nav>
+                <textarea id="ed"></textarea>
+            </div>
+            <div class="pure-u-3-5">
+                <iframe id="output" width="100%" frameborder="0"></iframe>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.min.js"></script>
+    <script src="http://codemirror.net/2/lib/util/formatting.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/addon/edit/closetag.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://unpkg.com/jquery.splitter/js/jquery.splitter.js"></script>
+    <script>
+        var editor;
+        let template = ["<html>", " <head>", "", " </head>", "<body>", "  <h1>Hello World</h1>", "</body>", "</html>"];
+
+        $(function () {
+            editor = CodeMirror.fromTextArea(document.getElementById("ed"), {
+                mode: "text/html",
+                htmlMode: true,
+                matchClosing: true,
+                alignCDATA: true,
+                lineNumbers: true,
+                autoCloseBrackets: true,
+                autoCloseTags: true,
+                lineWrapping: true
+            });
+            editor.on('change', function (editor) {
+                document.getElementById("output").srcdoc = editor.getValue();
+                if (localStorage) {
+                    localStorage.setItem("code", editor.getValue());
+                }
+            });
+            if (localStorage) {
+                var data = localStorage.getItem("code");
+                if (data)
+                    editor.getDoc().setValue(data);
+                else
+                    editor.getDoc().setValue(template.join('\n'));
+            } else
+                editor.getDoc().setValue(template.join('\n'));
+
+            var height = window.innerHeight;
+            $("#code_content").height(height).split({
+                "orientation": "vertical",
+                "limit": 100,
+                position: '40%',
+                percent: true
+            });
+        });
+
+        function resetCode() {
+            var isConfirm = confirm("Are you sure, Do you want to get rid of the current code?");
+            if (isConfirm)
+                editor.getDoc().setValue(template.join('\n'));
+        }
+
+        function formatCode() {
+            var totalLines = editor.lineCount();
+            var totalChars = editor.getTextArea().value.length;
+            editor.autoFormatRange({
+                line: 0,
+                ch: 0
+            }, {
+                line: totalLines,
+                ch: totalChars
+            });
+        }
+    </script>
+</body>
+
+</html>
