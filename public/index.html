@@ -71,6 +71,7 @@
                 <nav class="toolbar">
                     <button onclick="resetCode()">＋ New</button>
                     <button onclick="formatCode()">☵ Format</button>
+                    <button onclick="downloadCode()">Download</button>
                 </nav>
                 <textarea id="ed"></textarea>
             </div>
@@ -90,63 +91,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/mode/htmlmixed/htmlmixed.min.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://unpkg.com/jquery.splitter/js/jquery.splitter.js"></script>
-    <script>
-        var editor;
-        let template = ["<html>", " <head>", "", " </head>", "<body>", "  <h1>Hello World</h1>", "</body>", "</html>"];
-
-        $(function () {
-            editor = CodeMirror.fromTextArea(document.getElementById("ed"), {
-                mode: "text/html",
-                htmlMode: true,
-                matchClosing: true,
-                alignCDATA: true,
-                lineNumbers: true,
-                autoCloseBrackets: true,
-                autoCloseTags: true,
-                lineWrapping: true
-            });
-            editor.on('change', function (editor) {
-                document.getElementById("output").srcdoc = editor.getValue();
-                if (localStorage) {
-                    localStorage.setItem("code", editor.getValue());
-                }
-            });
-            if (localStorage) {
-                var data = localStorage.getItem("code");
-                if (data)
-                    editor.getDoc().setValue(data);
-                else
-                    editor.getDoc().setValue(template.join('\n'));
-            } else
-                editor.getDoc().setValue(template.join('\n'));
-
-            var height = window.innerHeight;
-            $("#code_content").height(height).split({
-                "orientation": "vertical",
-                "limit": 100,
-                position: '40%',
-                percent: true
-            });
-        });
-
-        function resetCode() {
-            var isConfirm = confirm("Are you sure, Do you want to get rid of the current code?");
-            if (isConfirm)
-                editor.getDoc().setValue(template.join('\n'));
-        }
-
-        function formatCode() {
-            var totalLines = editor.lineCount();
-            var totalChars = editor.getTextArea().value.length;
-            editor.autoFormatRange({
-                line: 0,
-                ch: 0
-            }, {
-                line: totalLines,
-                ch: totalChars
-            });
-        }
-    </script>
+    <script src="main.js"></script>
 </body>
 
 </html>
